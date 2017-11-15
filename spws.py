@@ -1,4 +1,3 @@
-# coords 42.3555 N, 71.0594 W
 import smtplib
 import urllib.request
 import json
@@ -47,25 +46,24 @@ Vis: {current_visibility}\n
 Hourly: {hourly_summary}\n
 Daily: {daily_summary}
 '''
-print(msg)
+# print(msg)
 
-# # create SMTP session
-# server = smtplib.SMTP('smtp.gmail.com', 587)
-# # server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+# create SMTP session
+server = smtplib.SMTP('smtp.gmail.com', 587)
+# server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 
-# fromAddr = f'{config[mail][fromAddr]}'
-# toAddr = f'{config[mail][toAddr]}'
-# # message to be sent
-# body = msg
+fromAddr = f'{config[mail][fromAddr]}'
+toAddr = f'{config[mail][toAddr]}'
+# message to be sent
+body = msg
 
-# # start TLS for security
-# server.ehlo()
-# server.starttls()
-# # server.ehlo()
+# start TLS for security
+server.ehlo()
+server.starttls()
 
-# # auth
-# server.login(f'{config[mail][fromAddr]}', f'{config[mail][login]}')
-# # send
-# server.sendmail(fromAddr, toAddr, body)
-# # terminate session
-# server.quit()
+# auth
+server.login(f'{config[mail][fromAddr]}', f'{config[mail][login]}')
+# send
+server.sendmail(fromAddr, toAddr, body)
+# terminate session
+server.quit()
