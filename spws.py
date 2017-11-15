@@ -3,20 +3,23 @@ import urllib.request
 import json
 import datetime
 import configparser
+import json
 
-config = configparser.ConfigParser()
-confFile = '.ini'
-config = configparser.ConfigParser()
-config.read(confFile)
-dsKey = config['dark_sky']['key']
+res = json.load(open('weather.json'))
 
-# make req
-url = f'https://api.darksky.net/forecast/{dsKey}/42.3555,-71.0594'
-req = urllib.request.Request(url)
+# config = configparser.ConfigParser()
+# confFile = 'creds_spws.ini'
+# config = configparser.ConfigParser()
+# config.read(confFile)
+# dsKey = config['dark_sky']['key']
 
-# parse res
-req = urllib.request.urlopen(req).read()
-res = json.loads(req.decode('utf-8'))
+# # make req
+# url = f'https://api.darksky.net/forecast/{dsKey}/42.3555,-71.0594'
+# req = urllib.request.Request(url)
+
+# # parse res
+# req = urllib.request.urlopen(req).read()
+# res = json.loads(req.decode('utf-8'))
 
 # res data
 current_time = datetime.datetime.fromtimestamp (res['currently']['time']).strftime('%H:%M:%S %m-%d-%Y')
@@ -49,21 +52,21 @@ Daily: {daily_summary}
 # print(msg)
 
 # create SMTP session
-server = smtplib.SMTP('smtp.gmail.com', 587)
-# server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+# server = smtplib.SMTP('smtp.gmail.com', 587)
+# # server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 
-fromAddr = f'{config[mail][fromAddr]}'
-toAddr = f'{config[mail][toAddr]}'
-# message to be sent
-body = msg
+# fromAddr = f'{config[mail][fromAddr]}'
+# toAddr = f'{config[mail][toAddr]}'
+# # message to be sent
+# body = msg
 
-# start TLS for security
-server.ehlo()
-server.starttls()
+# # start TLS for security
+# server.ehlo()
+# server.starttls()
 
-# auth
-server.login(f'{config[mail][fromAddr]}', f'{config[mail][login]}')
-# send
-server.sendmail(fromAddr, toAddr, body)
-# terminate session
-server.quit()
+# # auth
+# server.login(f'{config[mail][fromAddr]}', f'{config[mail][login]}')
+# # send
+# server.sendmail(fromAddr, toAddr, body)
+# # terminate session
+# server.quit()
