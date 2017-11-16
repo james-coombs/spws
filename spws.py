@@ -7,6 +7,7 @@ import json
 
 res = json.load(open('weather.json'))
 
+forecast = []
 # config = configparser.ConfigParser()
 # confFile = 'creds_spws.ini'
 # config = configparser.ConfigParser()
@@ -55,8 +56,9 @@ day: {daily_summary}
 # print(msg)
 
 # Get 24 instances of res['hourly']['data'] starting at 0400, format them, append to msg
-def get_hourly():
-	for hourData in res['hourly']['data']:
+def get_hourly(forecast):
+	for i in range(0, len(res['hourly']['data']) - 45):
+		hourData = res['hourly']['data'][i]
 		unixTime = int(hourData['time'])
 		hour_time = datetime.datetime.fromtimestamp (unixTime).strftime('%H:%M:%S %m-%d-%Y')
 		hour_apparentTemperature = hourData['apparentTemperature']
@@ -65,7 +67,7 @@ def get_hourly():
 		hour_precipIntensity = hourData['precipIntensity']
 		hour_humidity = hourData['humidity']
 
-		msg = f'''
+		hourly = f'''
 time: {hour_time} \n
 feel: {hour_apparentTemperature} \n
 windMPH: {hour_windSpeed} \n
@@ -73,12 +75,11 @@ cloud%: {hour_cloudCover} \n
 precip: {hour_precipIntensity} \n
 humid: {hour_humidity}
 				'''
-		print(hour_time)
-get_hourly()
+		forecast.append(hourly)
 
+get_hourly(forecast)
 
-
-
+print(forecast)
 # def format_time():
 # 	for hourData in res['hourly']['data']:
 # 		unixTime = int(hourData['time'])
