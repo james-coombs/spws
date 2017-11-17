@@ -8,6 +8,7 @@ import json
 res = json.load(open('weather.json'))
 
 forecast = []
+
 # config = configparser.ConfigParser()
 # confFile = 'creds_spws.ini'
 # config = configparser.ConfigParser()
@@ -38,26 +39,25 @@ current_precipProbability = res['currently']['precipProbability']
 hourly_summary = res['hourly']['summary']
 daily_summary = res['daily']['summary']
 
-msg = f'''
-sum: {current_summary}\n
-temp: {current_temperature}\n
-feels: {current_apparentTemperature}\n
-humid: {current_humidity}\n
-precipIntens: {current_precipIntensity}\n
-precipProb: {current_precipProbability}\n
-windMPH: {current_windSpeed}\n
-windDir: {current_windGust}\n
-cloud%: {current_cloudCover}\n
-uv: {current_uvIndex}\n
-vis: {current_visibility}\n
-hour: {hourly_summary}\n
+current = f'''
+sum: {current_summary}
+temp: {current_temperature}
+feels: {current_apparentTemperature}
+humid: {current_humidity}
+precipIntens: {current_precipIntensity}
+precipProb: {current_precipProbability}
+windMPH: {current_windSpeed}
+windDir: {current_windGust}
+cloud%: {current_cloudCover}
+uv: {current_uvIndex}
+vis: {current_visibility}
+hour: {hourly_summary}
 day: {daily_summary}
 '''
-# print(msg)
 
 # Get 24 instances of res['hourly']['data'] starting at 0400, format them, append to msg
 def get_hourly(forecast):
-	for i in range(0, len(res['hourly']['data']) - 45):
+	for i in range(len(res['hourly']['data']) - 45):
 		hourData = res['hourly']['data'][i]
 		unixTime = int(hourData['time'])
 		hour_time = datetime.datetime.fromtimestamp (unixTime).strftime('%H:%M:%S %m-%d-%Y')
@@ -68,24 +68,18 @@ def get_hourly(forecast):
 		hour_humidity = hourData['humidity']
 
 		hourly = f'''
-time: {hour_time} \n
-feel: {hour_apparentTemperature} \n
-windMPH: {hour_windSpeed} \n
-cloud%: {hour_cloudCover} \n
-precip: {hour_precipIntensity} \n
+time: {hour_time}
+feel: {hour_apparentTemperature}
+windMPH: {hour_windSpeed}
+cloud%: {hour_cloudCover}
+precip: {hour_precipIntensity}
 humid: {hour_humidity}
 				'''
 		forecast.append(hourly)
-
 get_hourly(forecast)
 
-print(forecast)
-# def format_time():
-# 	for hourData in res['hourly']['data']:
-# 		unixTime = int(hourData['time'])
-# 		stdTime = datetime.datetime.fromtimestamp (unixTime).strftime('%H:%M:%S %m-%d-%Y')
-# 		print(stdTime)
-# format_time()
+msg = current + ''.join(forecast)
+print(msg)
 
 # # create SMTP session
 # server = smtplib.SMTP('smtp.gmail.com', 587)
